@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_user")  // colocar o nome da tabela no BD diferente do nome que tá no atributo.
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,6 +26,7 @@ public class User implements Serializable {
 	private String email;
 	private String senha;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente") // atributo do outro lado da associação. 
 	private List<Order> orders = new ArrayList<>();
 	
