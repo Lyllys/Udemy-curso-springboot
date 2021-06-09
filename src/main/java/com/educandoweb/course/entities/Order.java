@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -25,6 +26,8 @@ public class Order implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'" , timezone = "GMT" )
 	private Instant momento;
 	
+	private Integer statusPedido;
+	
 	
 	@ManyToOne // um usuário pode fazer muitos pedidos;
 	@JoinColumn(name = "cliente_id") // nome da chave estrageira que vai ter lá no BD;
@@ -34,10 +37,11 @@ public class Order implements Serializable {
 		
 	}
 
-	public Order(Long id, Instant momento, User cliente) {
+	public Order(Long id, Instant momento, OrderStatus statusPedido, User cliente) {
 		super();
 		this.id = id;
 		this.momento = momento;
+		setStatusPedido(statusPedido);
 		this.cliente = cliente;
 	}
 
@@ -56,6 +60,16 @@ public class Order implements Serializable {
 	public void setMomento(Instant momento) {
 		this.momento = momento;
 	}
+	
+	public OrderStatus getStatusPedido() {
+		return OrderStatus.valueOf(statusPedido);
+	}
+
+	public void setStatusPedido(OrderStatus statusPedido) {
+		if(statusPedido != null) {
+			this.statusPedido = statusPedido.getCodigo();
+		}
+	}
 
 	public User getCliente() {
 		return cliente;
@@ -64,7 +78,7 @@ public class Order implements Serializable {
 	public void setCliente(User cliente) {
 		this.cliente = cliente;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
